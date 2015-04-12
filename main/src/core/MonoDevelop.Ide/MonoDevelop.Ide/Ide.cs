@@ -164,6 +164,17 @@ namespace MonoDevelop.Ide
 				return Runtime.Version;
 			}
 		}
+
+		static void TrackScreenInformation (Gdk.Screen screen)
+		{
+			for (int i = 1; i <= screen.NMonitors; ++i) {
+				var mon = screen.GetMonitorGeometry (i - 1);
+				Counters.Monitors.SetValue (i, string.Format ("Monitor #{0}", i), new Dictionary<string, string> {
+					{ "Width", mon.Width.ToString () },
+					{ "Height", mon.Height.ToString () },
+				});
+			}
+		}
 		
 		public static void Initialize (IProgressMonitor monitor)
 		{
@@ -201,6 +212,8 @@ namespace MonoDevelop.Ide
 			Counters.Initialization.Trace ("Initializing Workbench");
 			workbench.Initialize (monitor);
 			monitor.Step (1);
+
+			TrackScreenInformation (workbench.RootWindow.Screen);
 			
 			InternalLog.EnableErrorNotification ();
 
