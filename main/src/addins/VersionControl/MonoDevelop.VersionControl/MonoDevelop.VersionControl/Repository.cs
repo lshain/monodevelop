@@ -43,6 +43,7 @@ namespace MonoDevelop.VersionControl
 			VersionControlSystem = vcs;
 			Repositories.SetValue (Repositories.Count + 1, string.Format ("Repository #{0}", Repositories.Count + 1), new Dictionary<string, string> {
 				{ "Type", vcs.Name },
+				{ "Version", vcs.Version },
 			});
 		}
 		
